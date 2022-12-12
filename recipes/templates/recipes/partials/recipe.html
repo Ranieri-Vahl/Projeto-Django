@@ -1,50 +1,63 @@
 <div class="recipe recipe-list-item">
     <div class="recipe-cover">
-        <img src="https://via.placeholder.com/1280x720.png/269fe6" alt="">
+        <a href="{% url 'recipes:recipe' recipe.id %}">
+            <img src="{{ recipe.cover.url }}" alt="">
+        </a>
     </div>
 
     <div class="recipe-title-container">
-        <h2 class="recipe-title"> Lorem ipsum dolor sit amet. </h2>
+        <a href="{% url 'recipes:recipe' recipe.id %}">
+            <h2 class="recipe-title"> {{ recipe.title }} </h2>
+        </a>
     </div>
 
     <div class="recipe-author">
         <span class="recipe-author-item">
             <i class="fas fa-user"></i>
-            Ranieri Vahl
+            {{ recipe.author.first_name }}
         </span>
         <span class="recipe-author-item">
             <i class="fas fa-calendar-alt"></i>
-            08/12/2022
+            {{ recipe.created_at }}
         </span>
         <span class="recipe-author-item">
             <a href="/">
                 <i class="fas fa-layer-group"></i>
-                <span>Breakfast</span>
+                <span>{{ recipe.category.name }}</span>
             </a>
         </span>
     </div>
 
     <div class="recipe-author-text">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi, pariatur numquam? Repellendus ex ullam hic accusamus 
-        consequuntur commodi esse blanditiis maxime? Nulla accusantium consequatur ex. Assumenda delectus repudiandae modi recusandae?
+        {{recipe.description}}
     </div>
 
     <div class="recipe-meta-container">
         <div class="recipe-meta recipe-prep">
             <h3 class="recipe-meta-title"><i class="fas fa-stopwatch"></i> Total Time</h3>
             <div class="recipe-meta-text">
-                0 mins
+                {{recipe.preparation_time}} {{recipe.preparation_time_unit}}
+
             </div>
         </div>
         <div class="recipe-meta recipe-servings">
             <h3 class="recipe-meta-title"><i class="fas fa-pizza-slice"></i> Servings</h3>
             <div class="recipe-meta-text">
-                0 Servings
+                {{recipe.servings}} {{recipe.servings_unit}}
             </div>
         </div>
     </div>
 
-    <footer class="recipe-footer">
-        <a class="recipe-read-more" href="recipe/1"><i class="fas fa-eye"></i><span> see more...</span></a>
-    </footer>
+    {% if is_detail_page is not True %}
+        <footer class="recipe-footer">
+            <a class="recipe-read-more" href="{% url 'recipes:recipe' recipe.id %}"><i class="fas fa-eye"></i><span> see more...</span></a>
+        </footer>
+    {% endif %}
+
+    {% if is_detail_page is True %}
+        <div class="preparation-steps">
+            <p>{{recipe.preparation_steps|linebreaksbr}}</p>
+        </div>
+    {% endif %}
+
 </div>
