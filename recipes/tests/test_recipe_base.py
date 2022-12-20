@@ -40,6 +40,7 @@ class RecipeTestBase(TestCase):
         preparation_steps='Recipe Preparation Steps',
         preparation_steps_is_html=False,
         is_published=True,
+        cover='https://loremflickr.com/320/240?random',
     ):
         if category_data is None:
             category_data = {}
@@ -60,4 +61,5 @@ class RecipeTestBase(TestCase):
             preparation_steps=preparation_steps,
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
+            cover=cover,
         )
