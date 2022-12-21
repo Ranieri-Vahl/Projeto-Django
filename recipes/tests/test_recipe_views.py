@@ -94,3 +94,11 @@ class RecipeViewsTest(RecipeTestBase):
 
         response = self.client.get(reverse('recipes:recipe', kwargs={'id': recipe.id})) # noqa E508
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_search_uses_the_correct_view(self):
+        resolved = resolve(reverse('recipes:search'))
+        self.assertEqual(resolved.func, views.search)
+
+    def test_recipe_search_loads_the_correct_template(self):
+        response = self.client.get(reverse('recipes:search'))
+        self.assertTemplateUsed(response, 'recipes/pages/search.html')

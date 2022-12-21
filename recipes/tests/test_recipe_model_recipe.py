@@ -7,14 +7,14 @@ class RecipeModelTest(RecipeTestBase):
     def setUp(self) -> None:
         self.recipe = self.make_recipe()
         return super().setUp()
-   
+  
     def make_recipe_no_defaults(self):
         recipe = Recipe(
             category=self.make_category(name='test field default'),
             author=self.make_author(username='test field default author'),
             title='Recipe Title',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug='recipe-slug1',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
@@ -44,7 +44,13 @@ class RecipeModelTest(RecipeTestBase):
     def test_field_preparation_steps_is_html__isfalse_by_default(self):
         recipe = self.make_recipe_no_defaults()
         self.assertFalse(recipe.preparation_steps_is_html)
-       
+                       
     def test_field_is_published__isfalse_by_default(self):
         recipe = self.make_recipe_no_defaults()
         self.assertFalse(recipe.is_published)
+
+    def test_recipe_model_str_representation(self):
+        self.recipe.title = 'Testing str Representation'
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(str(self.recipe), 'Testing str Representation')
