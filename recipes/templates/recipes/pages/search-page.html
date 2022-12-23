@@ -13,9 +13,9 @@
 </div>
 {% endblock content %}
 {% block footer %}
-    {% for recipe in recipes %}
-        {% include 'recipes/partials/footer.html' %}
-    {% empty %}
+    {% if recipes%}
+        {% include 'recipes/partials/footer.html' %}        
+    {% else %} 
         <footer class="main-footer-no-recipes">
             <div class="developer">
                 DEVELOPED BY <a href="https://www.linkedin.com/in/ranieri-vahl/">RANIERI VAHL</a>
@@ -24,5 +24,5 @@
                 POWERED BY <a href="https://www.djangoproject.com/">DJANGO</a>
             </div>
         </footer>
-    {% endfor %}
+    {% endif %}
 {% endblock footer %}
