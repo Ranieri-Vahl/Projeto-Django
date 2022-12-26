@@ -32,7 +32,7 @@ class RecipeCategoryView(RecipeTestBase):
 
         self.assertIn('This is a category page test', content)
 
-    def test_recipe_category_dont_show_recipes_if_is_published_false(self): # noqa E508
+    def test_recipe_category_dont_show_recipes_if_is_published_false(self): # noqa E501
         recipe = self.make_recipe(is_published=False)
 
         response = self.client.get(reverse(

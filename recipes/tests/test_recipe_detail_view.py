@@ -34,7 +34,7 @@ class RecipeDetailTest(RecipeTestBase):
             'This is a detail page test that loads one recipe', content
             )
 
-    def test_recipe_detail_dont_show_recipe_if_is_published_false(self): # noqa E508
+    def test_recipe_detail_dont_show_recipe_if_is_published_false(self): # noqa E501
         recipe = self.make_recipe(is_published=False)
 
         response = self.client.get(reverse(

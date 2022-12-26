@@ -35,7 +35,7 @@ class RecipeHomeView(RecipeTestBase):
         self.assertIn('Recipe Title', content)
         self.assertEqual(len(context), 1)
 
-    def test_recipe_home_dont_show_recipes_if_is_published_false(self): # noqa E508
+    def test_recipe_home_dont_show_recipes_if_is_published_false(self): # noqa E501
         self.make_recipe(is_published=False)
 
         response = self.client.get(reverse('recipes:home'))
