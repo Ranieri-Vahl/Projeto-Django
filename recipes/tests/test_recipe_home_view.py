@@ -4,6 +4,8 @@ from recipes import views
 
 from .test_recipe_base import RecipeTestBase
 
+from unittest.mock import patch
+
 
 class RecipeHomeView(RecipeTestBase):
     def test_function_home_view_is_correct(self):
@@ -42,4 +44,19 @@ class RecipeHomeView(RecipeTestBase):
         content = response.content.decode('utf-8')
         self.assertIn('<h1>No recipes found here !</h1>', content)
 
-    
+    def test_recipe_home_loads_correct_paginated(self):
+        for i in range(10):
+            self.make_recipe(
+                slug=f'tes-slug-{i}',
+                title=f'title-test-{i}', 
+                author_data={'username': f'one-{i}'}
+                )
+
+        with patch('recipes.views.PER_PAGE', new=3):
+            response = self.client.get(reverse('recipes:home'))
+            context = response.context['recipes']
+            paginator = context.paginator
+            objects = len(context.object_list)
+
+            self.assertEqual(objects, 3)
+            self.assertEqual(paginator.num_pages, 4)
