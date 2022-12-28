@@ -5,7 +5,6 @@ from django.http import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from utils.pagination import make_pagination
-
 from .models import Recipe
 
 # Create your views here.
@@ -52,6 +51,7 @@ def recipe(request, id):
 
 def search(request):
     search_term = request.GET.get('q', '').strip()
+
     if not search_term:
         raise Http404()
 
