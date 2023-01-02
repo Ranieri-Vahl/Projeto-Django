@@ -79,10 +79,10 @@ class RegisterForm(forms.ModelForm):
 
         widgets = {
             'first_name': forms.TextInput(attrs={
-                'placeholder': 'Type your first name '
+                'placeholder': 'Type your first name'
             }),
             'last_name': forms.TextInput(attrs={
-                'placeholder': 'Type your last name '
+                'placeholder': 'Type your last name'
             }),        
         }
 
