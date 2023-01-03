@@ -1,8 +1,10 @@
 from unittest import TestCase
-from parameterized import parameterized
+
 from django.test import TestCase as DjangoTestCase
-from authors.forms import RegisterForm
 from django.urls import reverse
+from parameterized import parameterized
+
+from authors.forms import RegisterForm
 
 
 class AuthorRegisterForm(TestCase):
@@ -59,7 +61,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:create')
         response = self.client.post(url, data=self.form_data, follow=True)
         self.assertIn(msg, response.content.decode('utf-8'))
-    
+   
     def test_username_field_min_lenght_should_be_5(self):
         self.form_data['username'] = 'joao'
         url = reverse('authors:create')
@@ -68,7 +70,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         self.assertIn(msg, response.content.decode('utf-8'))
 
     def test_username_field_max_lenght_should_be_20(self):
-        self.form_data['username'] = 'a' * 21 
+        self.form_data['username'] = 'a' * 21  
         url = reverse('authors:create')
         response = self.client.post(url, data=self.form_data, follow=True)
         msg = 'Min 5 and max 20 characters. Letters, numbers and @/./+/-/_ only' # noqa E501
@@ -99,3 +101,32 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:create')
         response = self.client.post(url, data=self.form_data, follow=True)
         self.assertNotIn(msg, response.content.decode('utf-8'))
+
+    def test_if_not_method_post_raises_404(self): 
+        url = reverse('authors:create')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_if_email_is_already_registered(self):
+        url = reverse('authors:create')
+        self.client.post(url, data=self.form_data, follow=True)
+        response = self.client.post(url, data=self.form_data, follow=True)
+        msg = 'This email is already registered'
+        self.assertIn(msg, response.content.decode('utf-8'))
+
+    def test_if_author_can_login(self):
+        url = reverse('authors:create')
+        self.form_data.update({
+            'username': 'testuser',
+            'password': '@ABCabc123',
+            'password2': '@ABCabc123',
+        })
+        self.client.post(url, data=self.form_data, follow=True)
+
+        is_authenticated = self.client.login(
+            username='testuser',
+            password='@ABCabc123',          
+        )
+
+        self.assertTrue(is_authenticated)
+
