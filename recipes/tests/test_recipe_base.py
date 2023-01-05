@@ -3,10 +3,7 @@ from django.test import TestCase
 from recipes.models import Category, Recipe, User
 
 
-class RecipeTestBase(TestCase):
-    def setUp(self) -> None:
-        return super().setUp()
-
+class RecipeMixIn:
     def make_category(self, name='Category'):
         return Category.objects.create(name=name)
 
@@ -63,3 +60,21 @@ class RecipeTestBase(TestCase):
             is_published=is_published,
             cover=cover,
         )
+    
+    def make_recipe_batch(self, qty=10):
+        recipes = []
+        for i in range(qty):
+            recipe = self.make_recipe(
+                slug=f'tes-slug-{i}',
+                title=f'title-test-{i}', 
+                author_data={'username': f'one-{i}'}
+                )
+            recipes.append(recipe)
+        return recipes
+
+
+class RecipeTestBase(TestCase, RecipeMixIn):
+    def setUp(self) -> None:
+        return super().setUp()
+
+
