@@ -1,4 +1,5 @@
 import time
+
 from django.test import LiveServerTestCase
 from utils.browser import make_chrome_browser
 
