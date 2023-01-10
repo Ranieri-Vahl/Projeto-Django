@@ -8,9 +8,7 @@ class AuthorsRegisterTest(AuthorsFunctionalBaseTest):
 
     def test_authors_register_form_empty_first_name_error_message(self):
         self.browser.get(self.live_server_url + '/authors/register/')
-        form = self.browser.find_element(
-            By.XPATH, '/html/body/main/div[2]/form'
-            )
+        form = self.get_form()
 
         self.fill_form_dummy_data(form)
         form.find_element(By.NAME, 'email').send_keys("dummy@dummy.com")
@@ -21,7 +19,6 @@ class AuthorsRegisterTest(AuthorsFunctionalBaseTest):
         first_name_field.send_keys(' ')
         first_name_field.send_keys(Keys.ENTER)
 
-        form = self.browser.find_element(
-            By.XPATH, '/html/body/main/div[2]/form'
-            )
+        form = self.get_form()
+        
         self.assertIn('This field is required', form.text)

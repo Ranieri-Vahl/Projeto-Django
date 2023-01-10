@@ -29,3 +29,8 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
         for field in fields:
             if field.is_displayed():
                 field.send_keys(' ' * 20)
+
+    def get_form(self):
+        return self.browser.find_element(
+            By.XPATH, '/html/body/main/div[2]/form'
+            )
