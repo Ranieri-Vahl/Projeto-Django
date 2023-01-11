@@ -34,3 +34,13 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
         return self.browser.find_element(
             By.XPATH, '/html/body/main/div[2]/form'
             )
+    
+    def form_field_test_with_callback(self, callback):
+        self.browser.get(self.live_server_url + '/authors/register/')
+        form = self.get_form()
+
+        self.fill_form_dummy_data(form)
+        form.find_element(By.NAME, 'email').send_keys("dummy@dummy.com")    
+
+        callback(form)
+        return form
