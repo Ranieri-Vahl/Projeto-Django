@@ -6,13 +6,35 @@
 {% block content %}
     <div class="main-content container center">
         <h2 class="logout-message">Dashboard ({{ user }})</h2>
+        {% include 'global/partials/messages.html' %}
         {% include 'authors/partials/logout_message.html' %}
-    </div>
 
-    {% include 'global/partials/messages.html' %}
+        <div class="authors-dashboard-container m-m">
+            <h2 class="authors-dashboard-h2">Your recipes ⇩</h2>
+            
+            <ul>
+                {% for recipe in recipes %}
+                    <li>
+                        <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">{{ recipe.title }}</a>
+                    </li>
+                {% empty %}
+                    <div>
+                        <h2>No recipes found here !</h2>
+                    </div>
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
     
+
 {% endblock content %}
 
 {% block footer %}
-    {% include 'global/partials/footer-no-recipe.html' %} 
+    {% if recipes%}
+        {% include 'global/partials/footer.html' %}        
+    {% else %} 
+        {% include 'global/partials/footer-no-recipe.html' %} 
+    {% endif %}
 {% endblock footer %}
+
