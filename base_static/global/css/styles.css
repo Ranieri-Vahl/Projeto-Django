@@ -448,6 +448,11 @@ h1,h2,h3,h4,h5,h6{
     background: var(--color-debug-light);
     color: var(--color-debug-dark);
 }
+/* authors */
+
+.logout-message{
+    margin: 1rem 0;
+}
 
 /* generics */
 

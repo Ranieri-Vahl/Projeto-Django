@@ -60,7 +60,7 @@ def login_create(request):
     else:
         messages.error(request, 'Invalid username or password')
     
-    return redirect('authors:login_view')
+    return redirect('authors:dashboard')
 
 
 @login_required(login_url='authors:login_view', redirect_field_name='next')
@@ -76,3 +76,8 @@ def logout_view(request):
     messages.success(request, 'Logged out successfully')
     logout(request)
     return redirect(reverse('authors:login_view'))
+
+
+@login_required(login_url='authors:login_view', redirect_field_name='next')
+def dashboard(request):
+    return render(request, 'authors/pages/dashboard.html')
