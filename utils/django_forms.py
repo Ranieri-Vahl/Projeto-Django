@@ -34,3 +34,11 @@ msgrequired = {'required': 'This field is required'}
 def add_attr(field, attr_name, attr_new_val):
     existing = field.widget.attrs.get(attr_name, '')
     field.widget.attrs[attr_name] = f'{existing} {attr_new_val}'.strip()
+
+
+def is_positive_number(value):
+    try:
+        number_string = float(value)
+    except ValueError:
+        return False
+    return number_string > 0

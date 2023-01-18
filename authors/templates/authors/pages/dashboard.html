@@ -16,6 +16,11 @@
                 {% for recipe in recipes %}
                     <li>
                         <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">{{ recipe.title }}</a>
+                        <form action="{% url 'authors:dashboard_recipe_delete'%}" method="POST" class="inline-form form-delete">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{recipe.id}}">
+                            <button type="submit" class="text-button">❌</button>
+                        </form>
                     </li>
                 {% empty %}
                     <div>
@@ -30,11 +35,7 @@
 
 {% endblock content %}
 
-{% block footer %}
-    {% if recipes%}
-        {% include 'global/partials/footer.html' %}        
-    {% else %} 
+{% block footer %}       
         {% include 'global/partials/footer-no-recipe.html' %} 
-    {% endif %}
 {% endblock footer %}
 

@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from utils.django_forms import (email_validation, strong_password,
-                                username_validation, msgrequired)
+from utils.django_forms import (email_validation, msgrequired, strong_password,
+                                username_validation)
 
 
 class RegisterForm(forms.ModelForm):
@@ -15,7 +15,7 @@ class RegisterForm(forms.ModelForm):
         }),
         validators=[strong_password]
         )
-    
+
     password2 = forms.CharField(
         error_messages=msgrequired,
         label='Confirm password',
@@ -55,7 +55,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
             'placeholder': 'Type your last name'
         }))
-    
+
     class Meta:
         model = User
         fields = [
@@ -86,3 +86,4 @@ class RegisterForm(forms.ModelForm):
                 'password': 'The passwords must be equal!',
                 'password2': 'The passwords must be equal!'
             })
+        return cleaned

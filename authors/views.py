@@ -7,6 +7,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from authors.forms.dashboard_new_recipe_form import AuthorsNewRecipe
 from authors.forms.dashboard_recipe_form import AuthorsRecipeForm
 from recipes.models import Recipe
 from utils.pagination import make_pagination
@@ -67,7 +68,7 @@ def login_create(request):
             messages.error(request, 'Invalid credentials')
     else:
         messages.error(request, 'Invalid username or password')
-    
+
     return redirect('authors:dashboard')
 
 
@@ -80,7 +81,7 @@ def logout_view(request):
     if request.POST.get('username') != request.user.username:
         messages.error(request, 'Invalid logout user')
         return redirect(reverse('authors:login_view'))  
-    
+
     messages.success(request, 'Logged out successfully')
     logout(request)
     return redirect(reverse('authors:login_view'))
@@ -91,7 +92,9 @@ def dashboard(request):
     recipes = Recipe.objects.filter(
         is_published=False, author=request.user
     )
-    paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
+    paje_obj, pagination_range = make_pagination(
+        request, recipes, PER_PAGE, qty_pages=2
+        )
 
     return render(request, 'authors/pages/dashboard.html', context={
         'recipes': paje_obj,
@@ -110,9 +113,67 @@ def dashboard_recipe_edit(request, id):
 
     form = AuthorsRecipeForm(
         data=request.POST or None,
+        files=request.FILES or None,
         instance=recipe,
     )
+
+    if form.is_valid():
+        recipe = form.save(commit=False)
+
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+
+        recipe.save()
+
+        messages.success(request, 'Your recipe was save with sucess')
+        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
 
     return render(request, 'authors/pages/dashboard_recipe.html', context={
         'form': form,
     })
+
+
+@login_required(login_url='authors:login_view', redirect_field_name='next')
+def dashboard_new_recipe(request):
+    form = AuthorsNewRecipe(
+        data=request.POST or None,
+        files=request.FILES or None,
+    )
+
+    if form.is_valid():
+        recipe = form.save(commit=False)
+
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+
+        recipe.save()
+
+        messages.success(
+            request, 'Your recipe was created with success, wait for approve!'
+            )
+        return redirect(reverse('authors:dashboard'))
+
+    return render(request, 'authors/pages/dashboard_new_recipe.html', context={
+        'form': form
+    })
+
+
+@login_required(login_url='authors:login_view', redirect_field_name='next')
+def dashboard_recipe_delete(request):
+    if not request.POST:
+        raise Http404
+    POST = request.POST
+    id = POST.get('id')
+
+    recipe = Recipe.objects.filter(
+        is_published=False, author=request.user, id=id
+    ).first()
+
+    if not recipe:
+        raise Http404
+
+    recipe.delete()
+    messages.success(request, 'Recipe deleted with success')
+    return redirect(reverse('authors:dashboard'))

@@ -420,6 +420,9 @@ a{
     font-size: 1.6rem;
     cursor: pointer;
 }
+.login{
+    margin-bottom: 2rem;
+}
 
 .message-loggedin{
     margin-top: 2rem;
