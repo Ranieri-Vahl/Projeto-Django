@@ -31,7 +31,7 @@ def category(request, category_id):
         category__id=category_id,
         is_published=True
         ).order_by('-id'))
-   
+
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
     return render(request, 'recipes/pages/category.html', context={

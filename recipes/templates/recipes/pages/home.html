@@ -13,3 +13,10 @@
     </div>
 
 {% endblock content %}
+{% block footer %}
+    {% if recipes%}
+        {% include 'global/partials/footer.html' %}        
+    {% else %} 
+        {% include 'global/partials/footer-no-recipe.html' %} 
+    {% endif %}
+{% endblock footer %}
