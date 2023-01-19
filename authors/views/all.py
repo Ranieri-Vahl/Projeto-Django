@@ -7,12 +7,11 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from authors.forms import LoginForm, RegisterForm
 from authors.forms.dashboard_new_recipe_form import AuthorsNewRecipe
 from authors.forms.dashboard_recipe_form import AuthorsRecipeForm
 from recipes.models import Recipe
 from utils.pagination import make_pagination
-
-from .forms import LoginForm, RegisterForm
 
 PER_PAGE = os.environ.get('PER_PAGE')
 
