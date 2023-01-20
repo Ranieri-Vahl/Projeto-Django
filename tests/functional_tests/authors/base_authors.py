@@ -1,4 +1,5 @@
 import time
+from django.contrib.auth.models import User
 
 from django.test import LiveServerTestCase
 from selenium.webdriver.common.by import By
@@ -24,6 +25,11 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
             By.XPATH, f'//input[@placeholder="{placeholder}"]'
             )
 
+    def get_by_name(self, webelement, name):
+        return webelement.find_element(
+            By.NAME, f'"{name}"'
+            )
+
     def fill_form_dummy_data(self, form):
         fields = form.find_elements(By.TAG_NAME, 'input')
         for field in fields:
@@ -44,3 +50,17 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
 
         callback(form)
         return form
+    
+    def login(self):
+        string_password = 'P@ssW0rd'
+        user = User.objects.create_user(
+            username='my_user', password=string_password
+        )
+        self.browser.get(self.live_server_url + '/authors/login/')
+        form = self.browser.find_element(By.CLASS_NAME, 'main-form')
+        username_field = self.get_by_placeholder(form, 'Type your username')
+        password_field = self.get_by_placeholder(form, 'Type your password')
+
+        username_field.send_keys(user.username)
+        password_field.send_keys(string_password)
+        form.submit()

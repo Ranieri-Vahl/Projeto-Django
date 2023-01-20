@@ -16,9 +16,9 @@ class RecipeModelTest(RecipeTestBase):
             description='Recipe Description',
             slug='recipe-slug-for_defaults',
             preparation_time=10,
-            preparation_time_unit='Minutos',
+            preparation_time_unit='Minutes',
             servings=5,
-            servings_unit='Porções',
+            servings_unit='Portions',
             preparation_steps='Recipe Preparation Steps',
             cover='https://loremflickr.com/320/240?random',
         )
