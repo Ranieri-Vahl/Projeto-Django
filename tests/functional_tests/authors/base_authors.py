@@ -1,6 +1,6 @@
 import time
-from django.contrib.auth.models import User
 
+from django.contrib.auth.models import User
 from django.test import LiveServerTestCase
 from selenium.webdriver.common.by import By
 
@@ -39,8 +39,8 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
     def get_form(self):
         return self.browser.find_element(
             By.XPATH, '/html/body/main/div[2]/form'
-            )
-    
+            )    
+
     def form_field_test_with_callback(self, callback):
         self.browser.get(self.live_server_url + '/authors/register/')
         form = self.get_form()
@@ -50,7 +50,7 @@ class AuthorsFunctionalBaseTest(LiveServerTestCase):
 
         callback(form)
         return form
-    
+
     def login(self):
         string_password = 'P@ssW0rd'
         user = User.objects.create_user(
