@@ -106,6 +106,8 @@ class AuthorsDashboardFunctionalTest(AuthorsFunctionalBaseTest):
             By.XPATH, '/html/body/main/div/div[2]/ul/li/form/button'
             )
         remove_button.click()
+        alert = self.browser.switch_to.alert
+        alert.accept()
         self.assertIn(
             'Recipe deleted with success',
             self.browser.find_element(By.TAG_NAME, 'body').text

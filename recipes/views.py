@@ -6,7 +6,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from utils.pagination import make_pagination
 
-from .models import Recipe
+from .models import Recipe, Tag
 
 # Create your views here.
 
@@ -30,7 +30,7 @@ def category(request, category_id):
     recipes = get_list_or_404(Recipe.objects.filter(
         category__id=category_id,
         is_published=True
-        ).order_by('-id')).select_related('author', 'category')
+        ).order_by('-id').select_related('author', 'category'))
 
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
@@ -72,4 +72,28 @@ def search(request):
         'recipes': paje_obj,
         'pagination_range': pagination_range,
         'additional_url_query': f'&q={search_term}',
+    })  
+
+
+def tag(request, slug):
+    recipes = Recipe.objects.filter(
+        tags__slug=slug or '',
+        is_published=True,
+    ).order_by('-id').select_related(
+        'author', 'category'
+        ).prefetch_related('tags')
+
+    page_title = Tag.objects.filter(slug=slug).first()
+
+    if not page_title:
+        page_title = 'No recipes found'
+    
+    page_title = f'{page_title} - Tag |'
+
+    paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
+
+    return render(request, 'recipes/pages/tag.html', context={
+        'page_title': f'{page_title}',
+        'recipes': paje_obj,
+        'pagination_range': pagination_range,
     })  

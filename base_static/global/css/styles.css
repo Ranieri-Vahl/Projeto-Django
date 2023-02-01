@@ -148,6 +148,12 @@ a{
     padding-top: 0;
 }
 
+.main-content-pagination{
+    padding: 3.5rem;
+    padding-top: 0;
+    margin-bottom: 3.5rem;
+}
+
 .main-content-list{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
