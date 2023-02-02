@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.text import slugify
 
@@ -35,7 +34,7 @@ class Recipe(models.Model):
         User, on_delete=models.SET_NULL, null=True,
         blank=True, default=None,
     )
-    tags = GenericRelation(Tag, related_query_name='recipes')
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.title
