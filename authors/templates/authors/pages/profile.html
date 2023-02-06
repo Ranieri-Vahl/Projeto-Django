@@ -1,0 +1,31 @@
+{% extends 'global/base.html' %}
+
+{% block title %}Profile 〡{% endblock title %}
+
+
+{% block content %}
+    <div class="container center">
+        <h2 class="authors-dashboard-h2">Profile of {{profile.author.username}}</h2>
+        <p>{{profile.bio}}</p>
+    </div>
+    <div class="authors-dashboard-container m-m">
+        <h2 class="authors-dashboard-h2">Recipes posted ⇩</h2>
+        
+        <ul>
+            {% for recipe in recipes %}
+                <li>
+                    <a href="{% url 'recipes:recipe' recipe.id %}">{{ recipe.title }}</a>
+                </li>
+            {% empty %}
+                <div>
+                    <h2>No recipes of {{profile.author.username}}</h2>
+                </div>
+
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% include 'global/partials/footer-no-recipe.html' %} 
+{% endblock footer %}

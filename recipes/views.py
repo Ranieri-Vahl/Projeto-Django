@@ -8,15 +8,15 @@ from utils.pagination import make_pagination
 
 from .models import Recipe, Tag
 
-# Create your views here.
-
 PER_PAGE = os.environ.get('PER_PAGE')
 
 
 def home(request):
     recipes = Recipe.objects.filter(
         is_published=True
-    ).order_by('-id').select_related('author', 'category')
+    ).order_by('-id').select_related(
+        'author', 'category'
+        ).prefetch_related('author__profile')
 
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
@@ -30,7 +30,9 @@ def category(request, category_id):
     recipes = get_list_or_404(Recipe.objects.filter(
         category__id=category_id,
         is_published=True
-        ).order_by('-id').select_related('author', 'category'))
+        ).order_by('-id').select_related(
+            'author', 'category')
+            ).prefetch_related('author__profile')
 
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
@@ -62,7 +64,9 @@ def search(request):
             Q(description__icontains=search_term),
         ),
         is_published=True,
-    ).order_by('-id').select_related('author', 'category')
+    ).order_by('-id').select_related(
+        'author', 'category'
+        ).prefetch_related('author__profile')
 
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
@@ -81,7 +85,7 @@ def tag(request, slug):
         is_published=True,
     ).order_by('-id').select_related(
         'author', 'category'
-        ).prefetch_related('tags')
+        ).prefetch_related('tags', 'author__profile')
 
     page_title = Tag.objects.filter(slug=slug).first()
 
