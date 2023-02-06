@@ -4,22 +4,23 @@
 </button>
 
 <div class="menu-container menu-hidden">
-    <button class="button-show-menu button-show-menu-visible">
+    <button class="button-close-menu button-close-menu-visible">
         <i class="fas fa-times-circle"></i>
         <span class="text-hidden">Close menu</span>
     </button>
-</div>
-
-<div class="menu-content">
-    <nav "menu-nav">
-        <a href="{% url 'recipes:home' %}">Home</a>
-        {% if user.is_authenticated %}
-            <a href= "{% url 'authors:dashboard' %}">Dashboard</a>
-            <a href="{% url 'authors:dashboard_new_recipe' %}">New Recipe</a>
-            <a href="{% url 'authors:logout' %}">Logout</a>
-        {% else %}
-           <a href="{% url 'authors:login_view' %}">Login</a>
-           <a href="{% url 'authors:register_view' %}">Register</a>
-        {% endif %}
-    </nav>
+    
+    <div class="menu-content">
+        <nav class="menu-nav">
+            <a href="{% url 'recipes:home' %}">Home</a>
+            {% if user.is_authenticated %}
+                <a href= "{% url 'authors:dashboard' %}">Dashboard</a>
+                <a href="{% url 'authors:dashboard_new_recipe' %}">New Recipe</a>
+                <a class="authors-logout-link" href="{% url 'authors:logout' %}">Logout</a>
+                {% include 'authors/partials/form_logout.html' %}
+            {% else %}
+                <a href="{% url 'authors:login_view' %}">Login</a>
+                <a href="{% url 'authors:register_view' %}">Register</a>
+            {% endif %}
+        </nav>
+    </div>
 </div>

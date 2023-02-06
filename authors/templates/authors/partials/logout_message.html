@@ -3,10 +3,7 @@
         You are logged in with <b>{{ request.user.username }}</b>,
         <a href="{% url 'authors:dashboard' %}">See your recipes</a>,
         <a href="{% url 'authors:dashboard_new_recipe' %}">Create new recipe</a> or 
-        <form class="inline-form" method='POST' action={% url 'authors:logout' %}>
-            {% csrf_token %}
-            <input type="hidden" name="username" value="{{ request.user.username }}">
-            <button type="submit" class="text-button" >click here</button>
-        </form> to Logout.
+        {% include 'authors/partials/form_logout.html' %}
+        <a class="authors-logout-link" href="#">click here</a> to Logout.
     </div>
 {% endif %} 
