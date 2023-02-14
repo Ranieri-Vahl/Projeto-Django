@@ -2,7 +2,7 @@ import os
 
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
 
 from utils.pagination import make_pagination
 
@@ -27,11 +27,11 @@ def home(request):
 
 
 def category(request, category_id):
-    recipes = get_list_or_404(Recipe.objects.filter(
+    recipes = Recipe.objects.filter(
         category__id=category_id,
         is_published=True
         ).order_by('-id').select_related(
-            'author', 'category')
+            'author', 'category'
             ).prefetch_related('author__profile')
 
     paje_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
