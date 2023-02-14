@@ -20,12 +20,13 @@ def recipe_delete_cover(sender, instance, *args, **kwargs):
 
 
 @receiver(pre_save, sender=Recipe)
-def recipe_update_cover(sender, instance, *args, **kwargs):
+def recipe_cover_update(sender, instance, *args, **kwargs):
     old_instance = Recipe.objects.filter(pk=instance.pk).first()
-    is_new_cover = old_instance.cover != instance.cover
-    
+
     if not old_instance:
         return
-        
+
+    is_new_cover = old_instance.cover != instance.cover
+
     if is_new_cover:
         delete_cover(old_instance)
