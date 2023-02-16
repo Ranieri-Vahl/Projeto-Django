@@ -1,0 +1,45 @@
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from ..models import Recipe, Tag
+from ..serializers import RecipeSerializer, TagSerializer
+
+
+@api_view()
+def recipe_api_list(request):
+    recipes = Recipe.objects.filter(
+        is_published=True 
+        ).order_by(
+            '-id'
+            ).select_related('author', 'category').prefetch_related(
+                'tags'
+                )[:10]
+    serializer = RecipeSerializer(
+        instance=recipes, many=True, context={'request': request}
+        )
+    return Response(serializer.data)
+
+
+@api_view()
+def recipe_api_detail(request, pk):
+    recipe = get_object_or_404(Recipe.objects.filter(
+        is_published=True, pk=pk,
+        ).select_related('author', 'category').prefetch_related(
+                'tags'
+                ))
+    serializer = RecipeSerializer(
+        instance=recipe, many=False, context={'request': request}
+        )
+    return Response(serializer.data)
+
+
+@api_view()
+def tag_api_detail(request, pk):
+    tag = get_object_or_404(Tag.objects.filter(pk=pk))
+    serializer = TagSerializer(
+        instance=tag,
+        many=False,
+        context={'request': request},
+    )
+    return Response(serializer.data)

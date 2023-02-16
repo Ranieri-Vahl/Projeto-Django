@@ -20,9 +20,8 @@ class RecipeModelTest(RecipeTestBase):
             servings=5,
             servings_unit='Portions',
             preparation_steps='Recipe Preparation Steps',
-            cover='https://loremflickr.com/320/240?random',
+            cover='recipes/covers/2022/12/13/5.jpg',
         )
-        recipe.full_clean()
         recipe.save()
 
         return recipe
@@ -51,6 +50,5 @@ class RecipeModelTest(RecipeTestBase):
 
     def test_recipe_model_str_representation(self):
         self.recipe.title = 'Testing str Representation'
-        self.recipe.full_clean()
         self.recipe.save()
         self.assertEqual(str(self.recipe), 'Testing str Representation')

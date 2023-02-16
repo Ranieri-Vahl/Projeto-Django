@@ -47,7 +47,7 @@ class RecipeHomeView(RecipeTestBase):
     def test_recipe_home_loads_correct_paginated(self):
         self.make_recipe_batch(10)
 
-        with patch('recipes.views.PER_PAGE', new=3):
+        with patch('recipes.views.site.PER_PAGE', new=3):
             response = self.client.get(reverse('recipes:home'))
             context = response.context['recipes']
             paginator = context.paginator
@@ -59,7 +59,7 @@ class RecipeHomeView(RecipeTestBase):
     def test_if_invalid_page_query_uses_page_one(self):
         self.make_recipe_batch(10)
         
-        with patch('recipes.views.PER_PAGE', new=3):
+        with patch('recipes.views.site.PER_PAGE', new=3):
             response = self.client.get(reverse('recipes:home') + '?page=12ab')
             self.assertEqual(response.context['recipes'].number, 1)
 

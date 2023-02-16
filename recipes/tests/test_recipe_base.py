@@ -37,7 +37,7 @@ class RecipeMixIn:
         preparation_steps='Recipe Preparation Steps',
         preparation_steps_is_html=False,
         is_published=True,
-        cover='https://loremflickr.com/320/240?random',
+        cover='',
     ):
         if category_data is None:
             category_data = {}
