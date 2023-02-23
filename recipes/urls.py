@@ -10,9 +10,9 @@ urlpatterns = [
     path('recipe/tags/<slug:slug>', site.tag, name='tag'),
     path('recipe/category/<int:category_id>/', site.category, name='category'),  # noqa E501
     path('recipe/<int:id>/', site.recipe, name='recipe'),
-    path('recipe/api/v1/', api.recipe_api_list, name='recipe_api_v2'),
+    path('recipe/api/v1/', api.RecipeAPIv1List.as_view(), name='recipe_api_v2'), # noqa E501
     path(
-        'recipe/api/v1/<int:pk>/detail', api.recipe_api_detail,
+        'recipe/api/v1/<int:pk>/detail', api.RecipeAPIv1Detail.as_view(),
         name='recipe_api_v2_detail'
         ),
     path(
